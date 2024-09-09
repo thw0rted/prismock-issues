@@ -1,0 +1,37 @@
+{
+  "name": "prismock-issues",
+  "version": "1.0.0",
+  "description": "my issues with prismock",
+  "license": "MIT",
+  "scripts": {
+    "db:migrate": "prisma migrate deploy",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@prisma/client": "5.19.1"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.7.24",
+    "@swc/jest": "^0.2.36",
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "prisma": "^5.19.1",
+    "prismock": "^1.33.1",
+    "typescript": "^5.5.4"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "setupFilesAfterEnv": [
+      "./jest.setup.ts"
+    ],
+    "testRegex": ".spec.ts$",
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.(t|j)sx?$": "@swc/jest"
+    }
+  }
+}

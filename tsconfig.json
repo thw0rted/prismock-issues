@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "target": "ESnext",
+    "module": "NodeNext",
+    "strict": true
+  }
+}
