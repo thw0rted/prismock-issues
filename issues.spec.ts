@@ -1,54 +1,38 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import type { PrismockClient } from "prismock";
 
 const prisma = new PrismaClient();
 
 describe("My issues", () => {
-  test("No default uuid on creation", async () => {
-    const fooCuid = await prisma.fooCuid.create({
-      data: {
-        name: "foo",
-      },
-      select: {
-        id: true,
-        name: true,
-      },
-    });
-
-    // OK
-    expect(fooCuid.id).toBeDefined();
-
-    const fooUuid = await prisma.fooUuid.create({
-      data: {
-        name: "foo",
-      },
-      select: {
-        id: true,
-        name: true,
-      },
-    });
-
-    // KO
-    expect(fooUuid.id).toBeDefined();
+  beforeEach(() => {
+    (prisma as unknown as typeof PrismockClient).reset();
   });
 
-  test("No ", async () => {
-    try {
-      await prisma.fooCuid.findUniqueOrThrow({
-        where: {
-          id: "foo",
-        },
-        select: {
-          id: true,
-          name: true,
-        },
-      });
-      throw new Error("Find should fail");
-    } catch (e) {
-      // KO
-      expect(e).toBeInstanceOf(PrismaClientKnownRequestError);
-      // @ts-ignore
-      expect(e.code).toBe("P2025");
-    }
-  });
+  it('creates then updates', async () => {
+    const old = await prisma.fooInt.create({
+      data: {name: 'abc'},
+    })
+
+    expect(old.name).toBe('abc');
+
+    const upd = await prisma.fooInt.update({
+      where: {id: old.id},
+      data: {name: 'xyz'}
+    })
+
+    expect(upd.name).toBe('xyz');
+  })
+
+  it('creates then updates', async () => {
+    const old = await prisma.fooInt.create({
+      data: {name: 'abc'},
+    })
+
+    expect(old.name).toBe('abc');
+
+    await expect(prisma.fooInt.update({
+      where: {id: 9999},
+      data: {name: 'xyz'}
+    })).rejects.toThrow(/not found/);
+  })
 });

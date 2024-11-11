@@ -4,14 +4,14 @@ This repository archives all the issue I have with [prismock](https://github.com
 
 # Prerequisites
 
-This projects uses [node](https://nodejs.org), [yarn](https://yarnpkg.com/), [docker](https://www.docker.com/) and [docker-compose](https://docs.docker.com/compose/)
+This projects uses [node](https://nodejs.org) / NPM, [docker](https://www.docker.com/), and [docker-compose](https://docs.docker.com/compose/)
 
 # Development
 
 Install dependencies
 
 ```bash
-yarn install
+npm install
 ```
 
 Starts postgre service
@@ -23,11 +23,17 @@ docker-compose up
 Run the migration
 
 ```bash
-yarn db:migrate
+npm run db:migrate
+```
+
+Demonstrate actual Prisma behavior
+
+```bash
+node index.mjs
 ```
 
 Execute test
 
 ```bash
-yarn test
+npm run test
 ```
