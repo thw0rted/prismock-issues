@@ -8,31 +8,40 @@ describe("My issues", () => {
     (prisma as unknown as typeof PrismockClient).reset();
   });
 
-  it('creates then updates', async () => {
-    const old = await prisma.fooInt.create({
-      data: {name: 'abc'},
-    })
+  it('makes a widget when no approvals exist', async () => {
+    const w = await prisma.widget.create({
+      data:{
+        name: 'thing',
+        // requiredApprovals: {connect: {name: 'license'}},
+      },
+      include: {requiredApprovals: true},
+    });
+    expect(w.requiredApprovals).not.toContainEqual(expect.objectContaining({name:'license'}));
+  });
 
-    expect(old.name).toBe('abc');
+  it('makes an approval, then a widget with no approvals', async () => {
+    await prisma.approvalType.create({data:{name: 'license'}});
 
-    const upd = await prisma.fooInt.update({
-      where: {id: old.id},
-      data: {name: 'xyz'}
-    })
+    const w = await prisma.widget.create({
+      data:{
+        name: 'thing',
+      },
+      include: {requiredApprovals: true},
+    });
+    expect(w.requiredApprovals).not.toContainEqual(expect.objectContaining({name:'license'}));
+    expect(w.requiredApprovals.length).toBe(0);
+  });
 
-    expect(upd.name).toBe('xyz');
-  })
+  it('makes a widget with an approval', async () => {
+    await prisma.approvalType.create({data:{name: 'license'}});
 
-  it('creates then updates', async () => {
-    const old = await prisma.fooInt.create({
-      data: {name: 'abc'},
-    })
-
-    expect(old.name).toBe('abc');
-
-    await expect(prisma.fooInt.update({
-      where: {id: 9999},
-      data: {name: 'xyz'}
-    })).rejects.toThrow(/not found/);
-  })
+    const w = await prisma.widget.create({
+      data:{
+        name: 'thing',
+        requiredApprovals: {connect: {name: 'license'}},
+      },
+      include: {requiredApprovals: true},
+    });
+    expect(w.requiredApprovals).toEqual([{name:'license'}]);
+  });
 });

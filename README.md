@@ -2,11 +2,11 @@
 
 This repository archives all the issue I have with [prismock](https://github.com/morintd/prismock)
 
-# Prerequisites
+## Prerequisites
 
 This projects uses [node](https://nodejs.org) / NPM, [docker](https://www.docker.com/), and [docker-compose](https://docs.docker.com/compose/)
 
-# Development
+## Development
 
 Install dependencies
 
@@ -17,7 +17,7 @@ npm install
 Starts postgre service
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 Run the migration
