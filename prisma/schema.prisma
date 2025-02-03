@@ -18,6 +18,7 @@ model User {
   name        String
   email       String         @unique
   approverFor ApprovalType[]
+  widgets     Widget[]
 }
 
 model ApprovalType {
@@ -30,4 +31,5 @@ model Widget {
   id                Int            @id @default(autoincrement())
   name              String
   requiredApprovals ApprovalType[]
+  users             User[]
 }
